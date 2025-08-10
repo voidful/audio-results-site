@@ -116,15 +116,6 @@ export default function App() {
     };
   }
 
-  // 清除 <think> 標籤段
-  function stripThinking(s) {
-    if (!s || typeof s !== "string") return "";
-    const endTagIdx = s.indexOf("</think>");
-    let out = endTagIdx >= 0 ? s.slice(endTagIdx + "</think>".length) : s;
-    out = out.replace(/<think>[\s\S]*?<\/think>/g, "");
-    return out.trim();
-  }
-
   // 由原始路徑產出 public/audio/ 的 URL
   function audioUrl(p) {
     if (!p) return "";
@@ -154,8 +145,8 @@ export default function App() {
       const qq = q.trim().toLowerCase();
       list = list.filter((s) =>
         (s.prompt || "").toLowerCase().includes(qq) ||
-        stripThinking(s.prediction).toLowerCase().includes(qq) ||
-        stripThinking(s.label).toLowerCase().includes(qq)
+        s.prediction.toLowerCase().includes(qq) ||
+        s.label.toLowerCase().includes(qq)
       );
     }
     return list;
@@ -243,16 +234,16 @@ export default function App() {
                   <div className="space-y-4">
                     <div>
                       <div className="text-sm font-semibold mb-1">Prompt / 問題</div>
-                      <ContentBox text={stripThinking(s.prompt)} mono={false} />
+                      <ContentBox text={s.prompt} mono={false} />
                     </div>
                     <div className="grid md:grid-cols-2 gap-3">
                       <div>
                         <div className="text-sm font-semibold mb-1">Prediction</div>
-                        <ContentBox text={stripThinking(s.prediction)} />
+                        <ContentBox text={s.prediction} />
                       </div>
                       <div>
                         <div className="text-sm font-semibold mb-1">Label</div>
-                        <ContentBox text={stripThinking(s.label)} />
+                        <ContentBox text={s.label} />
                       </div>
                     </div>
                   </div>
